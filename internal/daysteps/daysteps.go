@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Yandex-Practicum/tracker/internal/personaldata"
-	"github.com/Yandex-Practicum/tracker/internal/spentenergy"
+	pd "github.com/Yandex-Practicum/tracker/internal/personaldata"
+	se "github.com/Yandex-Practicum/tracker/internal/spentenergy"
 )
 
 const actionInfoFormat = "Количество шагов: %d.\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.\n"
@@ -16,7 +16,7 @@ const actionInfoFormat = "Количество шагов: %d.\nДистанци
 type DaySteps struct {
 	Steps int
 	Duration time.Duration
-	personaldata.Personal
+	pd.Personal
 }
 
 func (ds *DaySteps) Parse(datastring string) (err error) {
@@ -44,8 +44,8 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 }
 
 func (ds DaySteps) ActionInfo() (string, error) {
-	distance := spentenergy.Distance(ds.Steps, ds.Height)
-	calories, err := spentenergy.WalkingSpentCalories(ds.Steps, ds.Weight, ds.Height, ds.Duration)
+	distance := se.Distance(ds.Steps, ds.Height)
+	calories, err := se.WalkingSpentCalories(ds.Steps, ds.Weight, ds.Height, ds.Duration)
 	if err != nil {
 		return "", err
 	}
