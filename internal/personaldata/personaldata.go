@@ -1,7 +1,9 @@
 package personaldata
 
 type Personal struct {
-	// TODO: добавить поля
+	Name string
+	Weight,
+	Height float64
 }
 
 func (p Personal) Print() {
