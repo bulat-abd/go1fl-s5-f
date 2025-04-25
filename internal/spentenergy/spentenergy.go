@@ -1,6 +1,7 @@
 package spentenergy
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -12,14 +13,41 @@ const (
 	walkingCaloriesCoefficient = 0.5  // коэффициент для расчета калорий при ходьбе.
 )
 
+func calculateCalories(steps int, weight, height float64, duration time.Duration) float64 {
+	return weight * MeanSpeed(steps, height, duration) * duration.Hours()
+}
+
+func validateParams(steps int, weight, height float64, duration time.Duration) error {
+	if steps <= 0 {
+		return fmt.Errorf("bad data: step count must be positive")
+	}
+	if weight <= 0 {
+		return fmt.Errorf("bad data: weight must be positive")
+	}
+	if height <= 0 {
+		return fmt.Errorf("bad data: height must be positive")
+	}
+	if duration <= 0 {
+		return fmt.Errorf("bad data: duration must be positive")
+	}
+	return nil
+}
+
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
-	// TODO: реализовать функцию
-	return 0, nil
+	err := validateParams(steps, weight, height, duration)
+	if err != nil {
+		return 0, err
+	}
+	calories := calculateCalories(steps, weight, height, duration) * walkingCaloriesCoefficient
+	return  calories, nil
 }
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
-	// TODO: реализовать функцию
-	return 0, nil
+	err := validateParams(steps, weight, height, duration)
+	if err != nil {
+		return 0, err
+	}
+	return calculateCalories(steps, weight, height, duration), nil
 }
 
 func MeanSpeed(steps int, height float64, duration time.Duration) float64 {
