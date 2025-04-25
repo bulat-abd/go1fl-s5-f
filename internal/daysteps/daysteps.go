@@ -14,8 +14,10 @@ type DaySteps struct {
 
 func (ds *DaySteps) Parse(datastring string) (err error) {
 	// TODO: реализовать функцию
+	return nil
 }
 
 func (ds DaySteps) ActionInfo() (string, error) {
 	// TODO: реализовать функцию
+	return "", nil
 }
