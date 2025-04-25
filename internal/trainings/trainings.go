@@ -14,8 +14,10 @@ type Training struct {
 
 func (t *Training) Parse(datastring string) (err error) {
 	// TODO: реализовать функцию
+	return nil
 }
 
 func (t Training) ActionInfo() (string, error) {
 	// TODO: реализовать функцию
+	return "", nil
 }
