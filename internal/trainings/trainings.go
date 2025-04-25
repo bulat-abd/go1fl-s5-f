@@ -7,7 +7,10 @@ import (
 	"time"
 
 	"github.com/Yandex-Practicum/tracker/internal/personaldata"
+	"github.com/Yandex-Practicum/tracker/internal/spentenergy"
 )
+
+const trainingInfoFormat = "Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n"
 
 type Training struct {
 	Steps int
@@ -43,6 +46,19 @@ func (t *Training) Parse(datastring string) (err error) {
 }
 
 func (t Training) ActionInfo() (string, error) {
-	// TODO: реализовать функцию
-	return "", nil
+	var err error
+	calories := 0.0
+	switch t.TrainingType {
+		case "Бег":
+			calories, err = spentenergy.RunningSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
+		case "Ходьба":
+			calories, err = spentenergy.WalkingSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
+		default:
+			err = fmt.Errorf("неизвестный тип тренировки")
+	}
+	if err != nil {
+		return "", fmt.Errorf("bad data: error while calculating calories - %w", err)
+	}
+	result := fmt.Sprintf(trainingInfoFormat, t.TrainingType, t.Duration.Hours(), spentenergy.Distance(t.Steps, t.Height), spentenergy.MeanSpeed(t.Steps, t.Height, t.Duration), calories)
+	return result, nil
 }
