@@ -11,7 +11,6 @@ type DataParser interface {
 }
 
 func Info(dataset []string, dp DataParser) {
-	// TODO: реализовать функцию
 	for _, datum := range dataset {
 		err := dp.Parse(datum)
 		if err != nil {
