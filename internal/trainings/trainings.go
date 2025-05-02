@@ -46,8 +46,10 @@ func (t *Training) Parse(datastring string) (err error) {
 }
 
 func (t Training) ActionInfo() (string, error) {
-	var err error
-	calories := 0.0
+	var (
+		calories float64
+		err error
+	)
 	switch t.TrainingType {
 		case "Бег":
 			calories, err = spentenergy.RunningSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
